@@ -5,8 +5,9 @@ public class SnakeAndLadderSimulator
 	public static void main(String[] args) 
 	{
 		Random random = new Random();
-		int playerPosition = 0;
-		int dieRolledCount = gameLoop ( playerPosition, random );
+		int firstPlayerPosition = 0;
+		int secondPlayerPosition = 0;
+		int dieRolledCount = gameLoop ( firstPlayerPosition, secondPlayerPosition, random );
 		System.out.println ("total die roll count is : " + dieRolledCount);
 	}
 	
@@ -19,7 +20,7 @@ public class SnakeAndLadderSimulator
 	}
 	
 	// uc3
-	public static int playerOptionCheck ( Random random, int playerPosition, int dieNumber )
+	public static int playerOptionCheck ( Random random, int PlayerPosition, int dieNumber )
 	{
 		final int noPlay = 0;
 		final int ladder = 1;
@@ -28,39 +29,70 @@ public class SnakeAndLadderSimulator
 		int playerOption = random.nextInt(3);
 		switch ( playerOption )
 		{
-			case	noPlay	:	playerPosition = playerPosition;
+			case	noPlay	:	PlayerPosition = PlayerPosition;
 						break;
-			case	ladder	:	playerPosition = playerPosition + dieNumber;
+			case	ladder	:	PlayerPosition = PlayerPosition + dieNumber;
+		// uc7
+						int dieNumber1 = dieRoll(random);
+						PlayerPosition = playerOptionCheck ( random, PlayerPosition, dieNumber1 );
 						break;
-			case	snake	:	playerPosition = playerPosition - dieNumber;
+			case	snake	:	PlayerPosition = PlayerPosition - dieNumber;
 		}
-		return playerPosition;
+		return PlayerPosition;
 	}
 	
 	// uc4
-	public static int gameLoop ( int playerPosition, Random random )
+	public static int gameLoop ( int firstPlayerPosition, int secondPlayerPosition, Random random )
 	{
-		int dieRolledCount = 0;
-		while ( playerPosition < 100 )
+		int dieRolledCountPlayer1 = 0;
+		int dieRolledCountPlayer2 = 0;
+		while ( firstPlayerPosition < 100 && secondPlayerPosition < 100 )
 		{
-			if ( playerPosition >= 0)
+			if ( firstPlayerPosition >= 0)
 			{
-				int tempPlayerPosition = playerPosition;
+				int tempfirstPlayerPosition = firstPlayerPosition;
 				int dieNumber = dieRoll ( random );
-				dieRolledCount++;
-				playerPosition = playerOptionCheck ( random, playerPosition, dieNumber );
+				dieRolledCountPlayer1++;
+				firstPlayerPosition = playerOptionCheck ( random, firstPlayerPosition, dieNumber );
 				// uc5
-				if ( playerPosition > 100 )
+				if ( firstPlayerPosition > 100 )
 				{
-					playerPosition = tempPlayerPosition;
+					firstPlayerPosition = tempfirstPlayerPosition;
 				}
 			}
 			else
 			{
-				playerPosition = 0;
+				firstPlayerPosition = 0;
 			}
-			System.out.println ("player position is : " + playerPosition);
+			System.out.println ("first player position is : " + firstPlayerPosition);
+			
+			if ( secondPlayerPosition >= 0)
+			{
+				int tempSecondPlayerPosition = secondPlayerPosition;
+				int dieNumber = dieRoll ( random );
+				dieRolledCountPlayer2++;
+				secondPlayerPosition = playerOptionCheck ( random, secondPlayerPosition, dieNumber );
+				// uc5
+				if ( secondPlayerPosition > 100 )
+				{
+					secondPlayerPosition = tempSecondPlayerPosition;
+				}
+			}
+			else
+			{
+				secondPlayerPosition = 0;
+			}
+			System.out.println ("second player position is : " + secondPlayerPosition );
 		}
-		return dieRolledCount;
+		if ( firstPlayerPosition == 100 )
+		{
+			System.out.println(" player 1 won ");
+			return dieRolledCountPlayer1;
+		}
+		else
+		{
+			System.out.println(" player 2 won ");
+			return dieRolledCountPlayer2;
+		}
 	}
 }
