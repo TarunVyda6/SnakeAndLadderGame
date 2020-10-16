@@ -13,7 +13,7 @@ public class SnakeAndLadderSimulator
 	public static int dieRoll ( Random random )
 	{
 		
-		int dieNumber = random.nextInt ( 6 ) + 1;
+		int dieNumber = random.nextInt (6) + 1;
 		return dieNumber;
 	}
 	
@@ -39,12 +39,18 @@ public class SnakeAndLadderSimulator
 	// uc4
 	public static int gameLoop ( int playerPosition, Random random )
 	{
+		// uc5
 		while ( playerPosition < 100 )
 		{
-			if ( playerPosition >= 0 )
+			if ( playerPosition >= 0)
 			{
+				int tempPlayerPosition = playerPosition;
 				int dieNumber = dieRoll ( random );
 				playerPosition = playerOptionCheck ( random, playerPosition, dieNumber );
+				if ( playerPosition > 100 )
+				{
+					playerPosition = tempPlayerPosition;
+				}
 			}
 			else
 			{
