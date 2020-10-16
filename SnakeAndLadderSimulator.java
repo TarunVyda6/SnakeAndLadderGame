@@ -6,7 +6,8 @@ public class SnakeAndLadderSimulator
 	{
 		Random random = new Random();
 		int playerPosition = 0;
-		playerPosition = gameLoop ( playerPosition, random );
+		int dieRolledCount = gameLoop ( playerPosition, random );
+		System.out.println ("total die roll count is : " + dieRolledCount);
 	}
 	
 	// uc2
@@ -39,14 +40,16 @@ public class SnakeAndLadderSimulator
 	// uc4
 	public static int gameLoop ( int playerPosition, Random random )
 	{
-		// uc5
+		int dieRolledCount = 0;
 		while ( playerPosition < 100 )
 		{
 			if ( playerPosition >= 0)
 			{
 				int tempPlayerPosition = playerPosition;
 				int dieNumber = dieRoll ( random );
+				dieRolledCount++;
 				playerPosition = playerOptionCheck ( random, playerPosition, dieNumber );
+				// uc5
 				if ( playerPosition > 100 )
 				{
 					playerPosition = tempPlayerPosition;
@@ -56,7 +59,8 @@ public class SnakeAndLadderSimulator
 			{
 				playerPosition = 0;
 			}
+			System.out.println ("player position is : " + playerPosition);
 		}
-		return playerPosition;
+		return dieRolledCount;
 	}
 }
